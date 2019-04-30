@@ -1,0 +1,33 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-contacts": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-sms-plugin": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-plugin-globalization": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    }
+  },
+  "dependent_plugins": {}
+}

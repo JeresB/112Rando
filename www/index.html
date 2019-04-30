@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+  <link rel="stylesheet" type="text/css" href="css/onsen-css-components.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/onsenui.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+  <title>112 Randonnées</title>
+</head>
+
+<body>
+  <ons-splitter>
+    <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+      <ons-page>
+        <ons-list>
+          <ons-list-item onclick="app.load('home.html')" tappable>
+            <div class="translate" caption="home.titre">Accueil</div>
+          </ons-list-item>
+          <ons-list-item onclick="app.load('path.html')" tappable>
+            <div class="translate" caption="path.titre">Parcours</div>
+          </ons-list-item>
+          <ons-list-item onclick="app.load('stats.html')" tappable>
+            <div class="translate" caption="stats.titre">Statistiques</div>
+          </ons-list-item>
+          <ons-list-item onclick="app.load('settings.html')" tappable>
+            <div class="translate" caption="setting.titre">Paramètres</div>
+          </ons-list-item>
+          <ons-list-item onclick="app.load('contact.html')" tappable>
+            <div class="translate" caption="contact.titre">Contacts</div>
+          </ons-list-item>
+        </ons-list>
+      </ons-page>
+    </ons-splitter-side>
+    <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+  </ons-splitter>
+
+  <template id="home.html">
+    <ons-page>
+      <ons-toolbar>
+        <div class="left">
+          <ons-toolbar-button onclick="app.open()">
+            <ons-icon icon="md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+        <div class="center translate" caption="home.titre"></div>
+        <div class="right">
+          <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
+        </div>
+      </ons-toolbar>
+
+      <ons-card>
+        <img src="img/meteo.jpg" alt="Météo" style="width: 100%">
+        <div class="title">
+          <p class="text-center">Météo <span id="cityname"></span></p>
+        </div>
+        <div class="content">
+          <p>
+            <span id="description_meteo"></span>
+            <span id="temperature" class="floatright"></span>
+          </p>
+        </div>
+      </ons-card>
+
+      <ons-button class="btn-large" modifier="large" onclick="app.load('path.html')">Démarrer un parcours</ons-button>
+      <ons-button class="btn-large" modifier="large" onclick="app.load('stats.html')">Voir les statistiques</ons-button>
+      <ons-button class="btn-large" modifier="large" onclick="app.load('settings.html')">Modifier les paramètres</ons-button>
+      <ons-button class="btn-large" modifier="large" onclick="app.load('contact.html')">Mettre à jour les contacts</ons-button>
+
+      <script type="text/javascript">
+        app.setLanguage();
+      </script>
+      <script type="text/javascript" src="js/meteo.js"></script>
+    </ons-page>
+  </template>
+
+  <template id="path.html">
+    <ons-page>
+      <link rel="stylesheet" href="css/chrono.css" />
+      <ons-toolbar>
+        <div class="left">
+          <ons-toolbar-button onclick="app.open()">
+            <ons-icon icon="md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+        <div class="center translate" caption="path.titre"></div>
+        <div class="right">
+          <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
+        </div>
+      </ons-toolbar>
+      <div class="chrono">
+        <span id="h">00</span>:<span id="m">00</span>:<span id="s">00</span>
+      </div>
+      <ons-row>
+        <ons-col>
+          <ons-button id="start" class="btn-large" modifier="large" onclick="">
+            <div class="translate" caption="path.start">Démarrer</div>
+          </ons-button>
+        </ons-col>
+        <ons-col>
+          <ons-button id="pause" class="btn-large" modifier="large" onclick="">Pause</ons-button>
+        </ons-col>
+        <ons-col>
+          <ons-button id="reset" class="btn-large" modifier="large" onclick="">Reset</ons-button>
+        </ons-col>
+      </ons-row>
+      <ons-row>
+        <div class="">
+          <span id="distance">0</span> km
+        </div>
+      </ons-row>
+
+      <script type="text/javascript">
+        app.setLanguage();
+      </script>
+      <script type="text/javascript" src="js/chrono.js"></script>
+    </ons-page>
+  </template>
+
+  <template id="stats.html">
+    <ons-page>
+      <ons-toolbar>
+        <div class="left">
+          <ons-toolbar-button onclick="app.open()">
+            <ons-icon icon="md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+        <div class="center translate" caption="stats.titre"></div>
+        <div class="right">
+          <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
+        </div>
+      </ons-toolbar>
+      <script type="text/javascript">
+        app.setLanguage();
+      </script>
+    </ons-page>
+  </template>
+
+  <template id="settings.html">
+    <ons-page>
+      <ons-toolbar>
+        <div class="left">
+          <ons-toolbar-button onclick="app.open()">
+            <ons-icon icon="md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+        <div class="center translate" caption="setting.titre"></div>
+        <div class="right">
+          <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
+        </div>
+      </ons-toolbar>
+      <ons-row>
+        <h2 class="center_title">Langage</h2>
+      </ons-row>
+      <ons-row>
+        <ons-col>
+          <img class="btn-large flag flag-fr-FR" onclick="app.updateLanguage('fr-FR')" src="img/france.png" alt="Français">
+        </ons-col>
+        <ons-col>
+          <img class="btn-large flag flag-en-EN" onclick="app.updateLanguage('en-EN')" src="img/united-kingdom.png" alt="English">
+        </ons-col>
+      </ons-row>
+      <ons-row>
+        <h2 class="center_title">Unité de température</h2>
+      </ons-row>
+      <ons-row>
+        <ons-col>
+          <ons-button modifier="large material" class="btn-large">°K</ons-button>
+        </ons-col>
+        <ons-col>
+          <ons-button modifier="large material" class="btn-large">°C</ons-button>
+        </ons-col>
+        <ons-col>
+          <ons-button modifier="large material" class="btn-large">°F</ons-button>
+        </ons-col>
+      </ons-row>
+      <script type="text/javascript">
+        app.setLanguage();
+      </script>
+    </ons-page>
+  </template>
+
+  <template id="contact.html">
+    <ons-page>
+      <ons-toolbar>
+        <div class="left">
+          <ons-toolbar-button onclick="app.open()">
+            <ons-icon icon="md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+        <div class="center translate" caption="contact.titre"></div>
+        <div class="right">
+          <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
+        </div>
+      </ons-toolbar>
+      <div style="text-align: center; margin-top: 30px;">
+        <p>
+          <label for="contact">Contact</label>
+          <ons-input id="contact" input-id="contact" placeholder=" 01 23 45 67 89"></ons-input>
+        </p>
+        <p style="margin-top: 30px;">
+          <ons-button onclick="saveContacts()"><span class="translate" caption="contact.saveButton"></span></ons-button>
+        </p>
+
+        <p>
+          <label for="message">Message</label>
+          <ons-input id="message" input-id="message" modifier="underbar" float></ons-input>
+        </p>
+        <p style="margin-top: 30px;">
+          <ons-button onclick="saveMessage()"><span class="translate" caption="contact.saveButton"></span></ons-button>
+        </p>
+      </div>
+      <ons-toast id="contactToast" animation="ascend">
+        Contact Enregistrer !
+        <button onclick="contactToast.hide()">OK</button>
+      </ons-toast>
+      <ons-toast id="messageToast" animation="ascend">
+        Message Enregistrer !
+        <button onclick="messageToast.hide()">OK</button>
+      </ons-toast>
+
+      <script type="text/javascript">
+        app.setLanguage();
+      </script>
+      <script type="text/javascript" src="js/contacts.js"></script>
+    </ons-page>
+  </template>
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/onsenui.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript">
+    app.initialize();
+  </script>
+</body>
+
+</html>
