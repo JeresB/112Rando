@@ -55,7 +55,7 @@
       <ons-card>
         <img src="img/meteo.jpg" alt="Météo" style="width: 100%">
         <div class="title">
-          <p class="text-center">Météo <span id="cityname"></span></p>
+          <p class="text-center"><span class="translate" caption="home.meteo">Météo</span> <span id="cityname"></span></p>
         </div>
         <div class="content">
           <p>
@@ -65,10 +65,10 @@
         </div>
       </ons-card>
 
-      <ons-button class="btn-large" modifier="large" onclick="app.load('path.html')">Démarrer un parcours</ons-button>
-      <ons-button class="btn-large" modifier="large" onclick="app.load('stats.html')">Voir les statistiques</ons-button>
-      <ons-button class="btn-large" modifier="large" onclick="app.load('settings.html')">Modifier les paramètres</ons-button>
-      <ons-button class="btn-large" modifier="large" onclick="app.load('contact.html')">Mettre à jour les contacts</ons-button>
+      <ons-button class="btn-large translate" modifier="large" onclick="app.load('path.html')" caption="home.btn.path">Démarrer un parcours</ons-button>
+      <ons-button class="btn-large translate" modifier="large" onclick="app.load('stats.html')" caption="home.btn.stats">Voir les statistiques</ons-button>
+      <ons-button class="btn-large translate" modifier="large" onclick="app.load('settings.html')" caption="home.btn.setting">Modifier les paramètres</ons-button>
+      <ons-button class="btn-large translate" modifier="large" onclick="app.load('contact.html')" caption="home.btn.contact">Mettre à jour les contacts</ons-button>
 
       <script type="text/javascript">
         app.setLanguage();
@@ -153,7 +153,7 @@
         </div>
       </ons-toolbar>
       <ons-row>
-        <h2 class="center_title">Langage</h2>
+        <h2 class="center_title translate" caption="setting.lang">Langage</h2>
       </ons-row>
       <ons-row>
         <ons-col>
@@ -164,7 +164,7 @@
         </ons-col>
       </ons-row>
       <ons-row>
-        <h2 class="center_title">Unité de température</h2>
+        <h2 class="center_title translate" caption="setting.temp">Unité de température</h2>
       </ons-row>
       <ons-row>
         <ons-col>
@@ -214,11 +214,11 @@
         </p>
       </div>
       <ons-toast id="contactToast" animation="ascend">
-        Contact Enregistrer !
+        <span class="translate" caption="contact.toast_contact">Contact Enregistrer !</span>
         <button onclick="contactToast.hide()">OK</button>
       </ons-toast>
       <ons-toast id="messageToast" animation="ascend">
-        Message Enregistrer !
+        <span class="translate" caption="contact.toast_message">Message Enregistrer !</span>
         <button onclick="messageToast.hide()">OK</button>
       </ons-toast>
 

@@ -56,18 +56,36 @@ var app = {
     var en = new Array();
 
     fr['home.titre'] = "Accueil";
+    fr['home.meteo'] = "Météo";
+    fr['home.btn.path'] = "Démarrer un parcours";
+    fr['home.btn.stats'] = "Voir les statistiques";
+    fr['home.btn.setting'] = "Modifier les paramètres";
+    fr['home.btn.contact'] = "Mettre à jour les contacts";
     fr['path.titre'] = "Parcours";
     fr['stats.titre'] = "Statistiques";
     fr['setting.titre'] = "Paramètres";
+    fr['setting.lang'] = "Langage";
+    fr['setting.temp'] = "Unité de température";
     fr['contact.titre'] = "Contacts";
     fr['contact.saveButton'] = "Enregistrer";
+    fr['contact.toast_contact'] = "Contact Enregistrer !";
+    fr['contact.toast_message'] = "Message Enregistrer !";
 
     en['home.titre'] = "Home";
+    en['home.meteo'] = "Weather";
+    en['home.btn.path'] = "Start a course";
+    en['home.btn.stats'] = "See the statistics";
+    en['home.btn.setting'] = "Update the settings";
+    en['home.btn.contact'] = "Update contacts";
     en['path.titre'] = "Path";
     en['stats.titre'] = "Statistics";
     en['setting.titre'] = "Settings";
+    en['setting.lang'] = "Language";
+    en['setting.temp'] = "Temperature unit";
     en['contact.titre'] = "Contact";
     en['contact.saveButton'] = "Save";
+    en['contact.toast_contact'] = "Contact Save !";
+    en['contact.toast_message'] = "Message Save !";
 
     ressources['fr-FR'] = fr;
     ressources['en-EN'] = en;
