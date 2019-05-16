@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
+  <!-- Chargement des fichiers CSS -->
   <link rel="stylesheet" type="text/css" href="css/onsen-css-components.min.css" />
   <link rel="stylesheet" type="text/css" href="css/onsenui.min.css" />
   <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -13,6 +14,9 @@
 </head>
 
 <body>
+  <!--------------------------------------------------------------------------->
+  <!-- MENU ------------------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
   <ons-splitter>
     <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
       <ons-page>
@@ -38,6 +42,9 @@
     <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
   </ons-splitter>
 
+  <!--------------------------------------------------------------------------->
+  <!-- Page d'ACCUEIL --------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
   <template id="home.html">
     <ons-page>
       <ons-toolbar>
@@ -96,27 +103,43 @@
       </div>
       <ons-row>
         <ons-col>
-          <ons-button id="start" class="btn-large" modifier="large" onclick="">
+          <ons-button id="start" class="btn-large" modifier="large">
             <div class="translate" caption="path.start">Démarrer</div>
           </ons-button>
         </ons-col>
         <ons-col>
-          <ons-button id="pause" class="btn-large" modifier="large" onclick="">Pause</ons-button>
+          <ons-button id="pause" class="btn-large" modifier="large">Pause</ons-button>
         </ons-col>
         <ons-col>
-          <ons-button id="reset" class="btn-large" modifier="large" onclick="">Reset</ons-button>
+          <ons-button id="reset" class="btn-large" modifier="large">Reset</ons-button>
         </ons-col>
       </ons-row>
       <ons-row>
-        <div class="">
-          <span id="distance">0</span> km
-        </div>
+        <ons-card modifier="material" style="width: 100%; text-align: center;">
+          <div class="content">
+            <div id="distance">
+              0 m
+            </div>
+          </div>
+          <div id="average_speed" class="content"></div>
+          <div id="max_speed" class="content"></div>
+        </ons-card>
       </ons-row>
-
+      <div id="showGPSData"></div>
+      <!-- <ons-row>
+    		<div id="map" style="height:250px!important;"></div>
+      </ons-row> -->
       <script type="text/javascript">
         app.setLanguage();
       </script>
       <script type="text/javascript" src="js/chrono.js"></script>
+      <!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
+      <!-- <script type="text/javascript" src="js/OpenLayers.js"></script>
+      <script type="text/javascript">
+        map = new OpenLayers.Map("map");
+        map.addLayer(new OpenLayers.Layer.OSM());
+        map.zoomToMaxExtent();
+  		</script> -->
     </ons-page>
   </template>
 
@@ -133,9 +156,25 @@
           <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
         </div>
       </ons-toolbar>
+
+      <ons-card modifier="material">
+        <div class="content">
+          Distance total parcourus : <span id="nb_km"></span> km
+        </div>
+        <div class="content">
+          Temps total (HH:mm:ss) : <span id="total_time"></span>
+        </div>
+      </ons-card>
+
+      <ons-list modifier="material">
+        <ons-list-header>Liste des <span id="nb_parcours"></span> Parcours</ons-list-header>
+        <div id="liste_data_parcours"></div>
+      </ons-list>
+      <ons-row id="buttonMoreData"></ons-row>
       <script type="text/javascript">
         app.setLanguage();
       </script>
+      <script type="text/javascript" src="js/stats.js"></script>
     </ons-page>
   </template>
 
@@ -163,24 +202,94 @@
           <img class="btn-large flag flag-en-EN" onclick="app.updateLanguage('en-EN')" src="img/united-kingdom.png" alt="English">
         </ons-col>
       </ons-row>
+      <hr>
+      <ons-row>
+        <h2 class="center_title translate" caption="setting.gpsTitle">Type d'unité GPS envoyé avec le message d'alerte</h2>
+      </ons-row>
+      <ons-row>
+        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DD')">Degrés décimal</ons-button>
+      </ons-row>
+      <ons-row>
+        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DMS')">Degrés minutes secondes</ons-button>
+      </ons-row>
+      <ons-row>
+        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('GM')">Google Maps</ons-button>
+      </ons-row>
+      <hr>
+      <ons-row>
+        <h2 class="center_title translate" caption="setting.notif">Notification <span id="notifStatus"></span></h2>
+      </ons-row>
+      <ons-row>
+        <ons-col>
+          <ons-button id="buttonOnNotif" modifier="large material" class="btn-large" onclick="onOffNotif('on')" style="background: #00701a;">Activer</ons-button>
+        </ons-col>
+        <ons-col>
+          <ons-button id="buttonOffNotif" modifier="large material" class="btn-large" onclick="onOffNotif('off')" style="background: #b71c1c;">Désactiver</ons-button>
+        </ons-col>
+        <!-- <ons-list style="width: 100%; margin: 2%; font: inherit; border-radius: 3px;">
+          <ons-list-item tappable>
+            <label class="left">
+              <ons-radio id="notifOn" name="notif" input-id="radio-1" data="on" onclick="onOffNotif('on')"></ons-radio>
+            </label>
+            <label for="radio-1" class="center">
+              Activé
+            </label>
+          </ons-list-item>
+          <ons-list-item tappable>
+            <label class="left">
+              <ons-radio id="notifOff" name="notif" input-id="radio-2" data="off" onclick="onOffNotif('off')"></ons-radio>
+            </label>
+            <label for="radio-2" class="center">
+              Désactivé
+            </label>
+          </ons-list-item>
+        </ons-list> -->
+      </ons-row>
+      <hr>
       <ons-row>
         <h2 class="center_title translate" caption="setting.temp">Unité de température</h2>
       </ons-row>
       <ons-row>
         <ons-col>
-          <ons-button modifier="large material" class="btn-large">°K</ons-button>
+          <ons-button modifier="large material" class="btn-large" onclick="updateUnitTemp('Kelvin')">°K</ons-button>
         </ons-col>
         <ons-col>
-          <ons-button modifier="large material" class="btn-large">°C</ons-button>
+          <ons-button modifier="large material" class="btn-large" onclick="updateUnitTemp('Celcius')">°C</ons-button>
         </ons-col>
         <ons-col>
-          <ons-button modifier="large material" class="btn-large">°F</ons-button>
+          <ons-button modifier="large material" class="btn-large" onclick="updateUnitTemp('Fahrenheit')">°F</ons-button>
         </ons-col>
       </ons-row>
+      <hr>
+      <ons-row>
+        <ons-button onclick="alertDialogReset()" modifier="large material" class="btn-large translate" style="background: #b71c1c;" caption="setting.reset">Supprimer toutes les données !</ons-button>
+      </ons-row>
+      <ons-toast id="alertDialogResetToast" animation="ascend">
+        <span class="translate" caption="alert_dialog_reset.toast">Données supprimées !</span>
+        <button onclick="alertDialogResetToast.hide()">OK</button>
+      </ons-toast>
+      <ons-toast id="unitToast" animation="ascend">
+        <span class="translate" caption="setting.toast_unit">Changement enregistré !</span>
+        <button onclick="unitToast.hide()">OK</button>
+      </ons-toast>
       <script type="text/javascript">
         app.setLanguage();
       </script>
+      <script type="text/javascript" src="js/setting.js"></script>
     </ons-page>
+  </template>
+
+  <template id="alert_dialog_reset.html">
+    <ons-alert-dialog id="alert_dialog_reset" modifier="rowfooter">
+      <div class="alert-dialog-title translate" caption="alert_dialog_reset.title">Attention</div>
+      <div class="alert-dialog-content translate" caption="alert_dialog_reset.text">
+        Êtes-vous sûr de supprimer les données de l'application ?
+      </div>
+      <div class="alert-dialog-footer">
+        <ons-alert-dialog-button onclick="hideAlertDialog()" class="translate" caption="alert_dialog_reset.cancel">Annuler</ons-alert-dialog-button>
+        <ons-alert-dialog-button onclick="resetData()" class="translate" caption="alert_dialog_reset.confirm">OK</ons-alert-dialog-button>
+      </div>
+    </ons-alert-dialog>
   </template>
 
   <template id="contact.html">
@@ -196,23 +305,40 @@
           <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
         </div>
       </ons-toolbar>
-      <div style="text-align: center; margin-top: 30px;">
-        <p>
+      <ons-card modifier="material">
+        <div class="content">
+          <ul>
+            <li>Le numéro renseigné ci-dessous recevra un SMS d'alerte quand vous appuierez sur le bouton SOS</li>
+          </ul>
+        </div>
+
+        <hr>
+
+        <div class="content" style="margin: 20px;">
           <label for="contact">Contact</label>
           <ons-input id="contact" input-id="contact" placeholder=" 01 23 45 67 89"></ons-input>
-        </p>
-        <p style="margin-top: 30px;">
-          <ons-button onclick="saveContacts()"><span class="translate" caption="contact.saveButton"></span></ons-button>
-        </p>
+        </div>
 
-        <p>
+        <div class="content" style="margin: 20px;">
+          <ons-button modifier="large material" onclick="showPopover(this)"><span class="translate" caption="contact.showContactButton"></span></ons-button>
+        </div>
+
+        <div class="content" style="margin: 20px;">
+          <ons-button modifier="large material" onclick="saveContacts()"><span class="translate" caption="contact.saveButton"></span></ons-button>
+        </div>
+
+        <hr>
+
+        <div class="content" style="margin: 20px;">
           <label for="message">Message</label>
           <ons-input id="message" input-id="message" modifier="underbar" float></ons-input>
-        </p>
-        <p style="margin-top: 30px;">
-          <ons-button onclick="saveMessage()"><span class="translate" caption="contact.saveButton"></span></ons-button>
-        </p>
-      </div>
+        </div>
+
+        <div class="content" style="margin: 20px;">
+          <ons-button modifier="large material" onclick="saveMessage()"><span class="translate" caption="contact.saveButton"></span></ons-button>
+        </div>
+      </ons-card>
+
       <ons-toast id="contactToast" animation="ascend">
         <span class="translate" caption="contact.toast_contact">Contact Enregistrer !</span>
         <button onclick="contactToast.hide()">OK</button>
@@ -227,7 +353,17 @@
       </script>
       <script type="text/javascript" src="js/contacts.js"></script>
     </ons-page>
+
   </template>
+
+  <ons-popover id="popover" direction="down">
+      <ons-list id="list_contact" style="max-height: 50vh; overflow: scroll;">
+        <ons-list-header class="translate" caption="contact.titlePopover">Liste de contacts</ons-list-header>
+      </ons-list>
+      <p style="text-align: center">
+        <ons-button onclick="hidePopover()"><span class="translate" caption="contact.closePopover">Fermer</span></ons-button>
+      </p>
+  </ons-popover>
 
   <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>

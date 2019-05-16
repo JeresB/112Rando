@@ -27,7 +27,20 @@
     },
     "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-sqlite-storage": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "com.carljeres.rando"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "com.carljeres.rando"
+    }
+  }
 }
