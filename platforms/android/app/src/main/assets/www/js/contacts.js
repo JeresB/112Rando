@@ -6,44 +6,56 @@ if (window.localStorage.getItem('contact') != null)
 if (window.localStorage.getItem('message') != null)
   $('#message').val(window.localStorage.getItem('message'));
 
+// We use the contacts plugin to search every contacts in the user phone
+// Permission : We only do this if the user has agree to it
+// This functionnality well be use to help the user find a emergency contact
 navigator.contacts.find(
   [navigator.contacts.fieldType.displayName],
   gotContacts,
-  errorHandler);
+  searchForContactError);
 
-function errorHandler(e) {
-  console.log("errorHandler: " + e);
+// This function is called if the contacts plugin has failed
+function searchForContactError(e) {
+  console.log("[SEARCH FOR CONTACT][ERROR] : " + e);
 }
 
+// This function is called when the contacts plugin has find every contacts
 function gotContacts(c) {
-  //console.log("gotContacts, number of results " + c.length);
+  // For every contacts we find
   for (var i = 1, len = c.length; i < len; i++) {
-    console.dir(c[i]);
+    // We check if we have a phone number for every contact
     if (c[i].phoneNumbers != null) {
-      console.log(c[i].phoneNumbers[0].value);
+      // Then we add an element to a list
+      // The user will be able to select a emergency contact with this list
       $("#list_contact").append('<ons-list-item class="contact" modifier="longdivider" data="' + c[i].phoneNumbers[0].value + '" tappable>' + c[i].displayName + '</ons-list-item>')
     }
   }
 }
 
-var showPopover = function(target) {
+// This function when called will show a popover with a list of every contacts find
+var showContactListPopover = function(target) {
   document
-    .getElementById('popover')
+    .getElementById('contact_list_popover')
     .show(target);
 };
 
-var hidePopover = function() {
+// This function will hide the contact list popover
+var hideContactListPopover = function() {
   document
-    .getElementById('popover')
+    .getElementById('contact_list_popover')
     .hide();
 };
 
+// In the contacts list if the user click on one contact then
 $("#list_contact").on( "click", ".contact", function(e) {
+  // We prevent default behavior of the click
   e.preventDefault()
 
+  // We set the contact value to the one that the user has selected
   $('#contact').val($(this).attr('data'))
 
-  hidePopover()
+  // We hide the contact list popover
+  hideContactListPopover()
 
   saveContacts()
 });

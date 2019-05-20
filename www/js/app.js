@@ -8,23 +8,20 @@ Number.prototype.toRad = function() {
   return this * Math.PI / 180
 }
 
-var startPos = null
-var distance = 0
-var unit = ''
-var timeId = null
-var Timeout = null
-
-$.getScript('js/timeout.js', function() {});
-
 // We declare to app object
+// This object will contains few methods use by this app
 var app = {
+  // This method will initialize this app
   initialize: function() {
     this.bindEvents();
   },
+  // This method will add a event listener 'deviceready'
   bindEvents: function() {
     document.addEventListener('deviceready', this.onDeviceReady, false);
   },
+  // This method will be call when the device is ready
   onDeviceReady: function() {
+    // We receive the event deviceready
     app.receivedEvent('deviceready');
 
     // Now that the app as loaded we can hide the splashscreen (Its a picture)
@@ -56,11 +53,20 @@ var app = {
       app.checkNotification()
     }
 
+    // If the user has not provided contact information
     if (window.localStorage.getItem('contact') == null || window.localStorage.getItem('contact') == '') {
-      alert("Veuillez renseigner un contact pour le bon fonctionnement de l'application")
+      // To update the language of the alert below
+      var lang = window.localStorage.getItem('langue')
+      var alert_contact_not_provided = ressources[lang]['home.alert_contact_not_provided'];
+
+      // We alert the user before we redirect him to another page
+      alert(alert_contact_not_provided)
+
+      // We load the contact page
       app.load('contact.html')
     }
   },
+  // Create by phonegap
   receivedEvent: function(id) {
     var parentElement = document.getElementById(id);
     var listeningElement = $(id + ' > .listening');
@@ -110,41 +116,58 @@ var app = {
       }
     }
   },
+  // This method will setup the notification
   checkNotification: function() {
+    // If the user has chosen to disable the notification
+    // Then we exit this method
     if (window.localStorage.getItem('notif') == 'off') return
 
+    // We check if we have the permission to display notification
     cordova.plugins.notification.local.hasPermission(function (granted) {
+      // To update the language of the notification
+      var lang = window.localStorage.getItem('langue')
+      var notif_text = ressources[lang]['notif.text'];
+      var notif_close = ressources[lang]['notif.close'];
+
+      // If we do, then we schedule a local notification
       cordova.plugins.notification.local.schedule({
-        id: 1,
-        title: "112 Rando",
-        text: "Appuyer sur le bouton SOS si besoin",
-        lockscreen: true,
-        ongoing: true,
+        id: 1, // Id : we can use it to close or cancel this notif later
+        title: "112 Rando", // The title
+        text: notif_text, // The description
+        lockscreen: true, // Display on lockscreen
+        ongoing: true, // The user will not be able to dismiss the notification
         icon: 'file://res/icon/android/drawable-hdpi-icon.png',
-        smallIcon: 'file://res/icon/android/drawable-mdpi-icon.png',
-        actions: [
-          {id: 'SOS', title: 'SOS', launch: true},
-          {id: 'close', title: 'CLOSE', launch: true}
+        smallIcon: 'res://icon/android/drawable-mdpi-icon.png',
+        actions: [ // Two actions
+          {id: 'SOS', title: 'SOS', launch: true}, // SOS to send a SMS
+          {id: 'close', title: notif_close, launch: true} // CLOSE to close the notif
         ]
       });
     });
 
+    // If the user trigger the SOS button on the notification
     cordova.plugins.notification.local.on('SOS', function (notification, eopts) {
       console.log("[NOTIFICATION SOS BUTTON TRIGGER] : " + notification, eopts);
+      // Then we call the method to send a SMS
       app.sendSms()
     });
 
+    // If the user trigger the CLOSE button on the notification
     cordova.plugins.notification.local.on('close', function (notification, eopts) {
       console.log("[NOTIFICATION CLOSE BUTTON TRIGGER] : " + notification, eopts);
 
+      // Then we cancel the notification
       cordova.plugins.notification.local.cancel(1, function() {
         console.log("[NOTIFICATION CLOSED]");
       });
     });
   },
+  // This method create the database and create one tables 'parcours'
   setupBDD: function() {
+    // We open a link to the database
     var randoBDD = window.sqlitePlugin.openDatabase({name: "randoBDD.db", location: 'default'});
 
+    // We make this transaction to create the table 'parcours' if she doesn't exist
     randoBDD.transaction(function(transaction) {
       transaction.executeSql('CREATE TABLE IF NOT EXISTS parcours (id integer primary key, distance real, temps text, vitesse_moyen real, vitesse_max real)', [],
         function(tx, result) {
@@ -156,22 +179,35 @@ var app = {
       );
     });
   },
-  // This function will simply create an array with every text needed to by translate
+  // This method will simply create an array with every text needed to by translate
   // We can add as many language as we want
   loadTraduction: function() {
     var fr = new Array();
     var en = new Array();
 
     fr['home.titre'] = "Accueil";
-    fr['home.meteo'] = "Météo";
+    fr['home.meteo'] = "Météo ";
     fr['home.btn.path'] = "Démarrer un parcours";
     fr['home.btn.stats'] = "Voir les statistiques";
     fr['home.btn.setting'] = "Modifier les paramètres";
     fr['home.btn.contact'] = "Mettre à jour les contacts";
+    fr['home.alert_contact_not_provided'] = "Veuillez renseigner un contact pour le bon fonctionnement de l'application";
+    fr['home.alert_send_sms'] = "Message d'alerte envoyé";
 
     fr['path.titre'] = "Parcours";
+    fr['path.distance'] = "Distance : ";
+    fr['path.average_speed'] = "Vitesse moyenne : ";
+    fr['path.max_speed'] = "Vitesse max : ";
+    fr['path.alert_database'] = "Parcours enregistré";
 
     fr['stats.titre'] = "Statistiques";
+    fr['stats.total_distance'] = "Distance total parcourus";
+    fr['stats.total_time'] = "Temps total (HH:mm:ss)";
+    fr['stats.average_speed'] = "Vitesse moyenne globale";
+    fr['stats.max_speed'] = "Vitesse max globale";
+    fr['stats.list_title_1'] = "Liste des ";
+    fr['stats.list_title_2'] = " Parcours";
+    fr['stats.more_data'] = "Plus de parcours";
 
     fr['setting.titre'] = "Paramètres";
     fr['setting.lang'] = "Langage";
@@ -186,6 +222,7 @@ var app = {
     fr['alert_dialog_reset.toast'] = "Données supprimées !";
 
     fr['contact.titre'] = "Contacts";
+    fr['contact.info'] = "Le numéro renseigné ci-dessous recevra un SMS d'alerte quand vous appuierez sur le bouton SOS";
     fr['contact.showContactButton'] = "Choisir parmi vos contacts";
     fr['contact.saveButton'] = "Enregistrer";
     fr['contact.toast_contact'] = "Contact Enregistrer !";
@@ -193,17 +230,35 @@ var app = {
     fr['contact.titlePopover'] = "Liste des contacts";
     fr['contact.closePopover'] = "Fermer";
 
+    fr['notif.text'] = "Appuyer sur le bouton SOS si besoin";
+    fr['notif.close'] = "FERMER";
+
+    fr['sms.coordinates'] = 'Coordonnées';
+
 
     en['home.titre'] = "Home";
-    en['home.meteo'] = "Weather";
+    en['home.meteo'] = "Weather ";
     en['home.btn.path'] = "Start a course";
     en['home.btn.stats'] = "See the statistics";
     en['home.btn.setting'] = "Update the settings";
     en['home.btn.contact'] = "Update contacts";
+    en['home.alert_contact_not_provided'] = "Please enter a contact for the proper functioning of the application";
+    en['home.alert_send_sms'] = "Alert message sent";
 
     en['path.titre'] = "Path";
+    en['path.distance'] = "Distance : ";
+    en['path.average_speed'] = "Average speed : ";
+    en['path.max_speed'] = "Max speed : ";
+    en['path.alert_database'] = "Saved path";
 
     en['stats.titre'] = "Statistics";
+    en['stats.total_distance'] = "Total distance traveled";
+    en['stats.total_time'] = "Total time (HH:mm:ss)";
+    en['stats.average_speed'] = "Overall average speed";
+    en['stats.max_speed'] = "Overall max speed";
+    en['stats.list_title_1'] = "List of ";
+    en['stats.list_title_2'] = " paths";
+    en['stats.more_data'] = "More data";
 
     en['setting.titre'] = "Settings";
     en['setting.lang'] = "Language";
@@ -218,6 +273,7 @@ var app = {
     en['alert_dialog_reset.toast'] = "Deleted data ! ";
 
     en['contact.titre'] = "Contact";
+    en['contact.info'] = "The number given below will receive an SMS alert when you press the SOS button";
     en['contact.showContactButton'] = "Choose from your contacts";
     en['contact.saveButton'] = "Save";
     en['contact.toast_contact'] = "Contact Save !";
@@ -225,11 +281,16 @@ var app = {
     en['contact.titlePopover'] = "Contacts list";
     en['contact.closePopover'] = "Close";
 
+    en['notif.text'] = "Press the SOS button if needed";
+    en['notif.close'] = "CLOSE";
+
+    en['sms.coordinates'] = 'Coordinates';
+
     ressources['fr-FR'] = fr;
     ressources['en-EN'] = en;
   },
-  // This function will call updateLanguage to update every text of the app
-  // With the language choosen by the user or by his phone
+  // This method will call updateLanguage to update every text of the app
+  // With the language chosen by the user or by his phone
   setLanguage: function() {
     // If we already have a language in memory
     // We simply call the function to update ever text
@@ -254,13 +315,13 @@ var app = {
       );
     }
   },
-  // This function will update the language of this app
+  // This method will update the language of this app
   updateLanguage: function(lang) {
     // We store the new language
     window.localStorage.setItem('langue', lang);
 
     // The grayscale class will modify the picture to be black and white
-    // Only the picture of the choosen language will be in color
+    // Only the picture of the chosen language will be in color
     $('.flag').addClass('grayscale');
     $('.flag-' + lang).removeClass('grayscale');
 
@@ -270,25 +331,30 @@ var app = {
       $(this).html(ressources[lang][$(this).attr("caption")]);
     });
   },
-  // This function allows the menu to open
+  // This method allows the menu to open
   open: function() {
     var menu = document.getElementById('menu');
     menu.open();
   },
-  // This function will load the page choosen by the user
+  // This method will load the page chosen by the user
   load: function(page) {
     var content = document.getElementById('content');
     var menu = document.getElementById('menu');
     content.load(page)
       .then(menu.close.bind(menu));
   },
+  // This method will recover the GPS location of the user
+  // Then she will send a SMS to the emergency contact save in this app
   sendSms: function() {
+    // First we recover the GPS coordinates
     navigator.geolocation.getCurrentPosition(function(position) {
+
+      // We store this data
       window.localStorage.setItem('latitude', position.coords.latitude);
       window.localStorage.setItem('longitude', position.coords.longitude);
       window.localStorage.setItem('altitude', position.coords.altitude);
 
-      // CONFIGURATION
+      // This variable `options` contain the configuration of the SMS
       var options = {
         replaceLineBreaks: false, // true to replace \n by a new line, false by default
         android: {
@@ -297,43 +363,67 @@ var app = {
         }
       };
 
+      // We recover the message that the user has chosen to send with the SMS
       var message = window.localStorage.getItem('message');
 
+      // To update the language of the message
+      var lang = window.localStorage.getItem('langue')
+      var coordinates = ressources[lang]['sms.coordinates'];
+
+      // If the user has chosen DD has a GPS unit
       if (window.localStorage.getItem('GPS_unit') == 'DD') {
-        message += "\nCoordonnées =>\nLatitude : " + window.localStorage.getItem('latitude')
+        // We add the GPS coordinates to the message in DD
+        message += "\n" + coordinates + " =>\nLatitude : " + window.localStorage.getItem('latitude')
         message += "\nLongitude : " + window.localStorage.getItem('longitude')
+
+      // Or the user has chosen DMS has a GPS unit
       } else if (window.localStorage.getItem('GPS_unit') == 'DMS') {
+        // We convert the GPS coordinates DD to DMS
         const result = app.convertDDToDMS(window.localStorage.getItem('latitude'), window.localStorage.getItem('longitude'))
         const lat = result[0]
         const lng = result[1]
 
-        message += "\nCoordonnées =>\nLatitude : " + lat
+        // We add the GPS coordinates to the message in DMs
+        message += "\n" + coordinates + " =>\nLatitude : " + lat
         message += "\nLongitude : " + lng
+
+      // Or the user has chosen to include Google Maps in the message
       } else if (window.localStorage.getItem('GPS_unit') == 'GM') {
-        message += "\nCoordonnées => \nhttps://maps.google.fr/maps?q=" + window.localStorage.getItem('latitude');
+        // We add a google maps link with the GPS coordinates
+        message += "\n" + coordinates + " => \nhttps://maps.google.fr/maps?q=" + window.localStorage.getItem('latitude');
         message += "," + window.localStorage.getItem('longitude') + "&num=1&t=h&z=19 ";
       }
 
+      // Then we add the altitude in the message
       message += "\nAltitude : " + app.round(window.localStorage.getItem('altitude'), 3);
 
-      console.log("Message = " + message);
-
+      // We recover the phone number of the emergency contact
       var numero = window.localStorage.getItem('contact');
 
+      // We call the method send with the SMS plugin to send our SOS
       sms.send(numero, message, options, function() {
-        alert("Message d'alerte envoyé");
+        // To update the language of the alert below
+        var lang = window.localStorage.getItem('langue')
+        var alert_send_sms = ressources[lang]['home.alert_send_sms'];
+
+        // SMS has been send
+        alert(alert_send_sms);
       }, function(e) {
-        alert("Message non envoyé : " + e);
+        // If the SMS couldn't be send
+        console.log("[SEND SMS][ERROR]: " + e);
       });
 
+    // If we can't recover the GPS location
     }, function(error) {
-      console.log('code: ' + error.code + '\nmessage: ' + error.message + '\n');
+      console.log('[SEND SMS][GET CURRENT POSITION] : [CODE] = ' + error.code + '\n[MESSAGE] = ' + error.message + '\n');
     });
   },
-  // This function allows to choose the number of decimals after the comma
+  // This method allows to chose the number of decimals after the comma
   round: function(value, decimals) {
     return Number(Math.round( value + 'e' + decimals ) + 'e-' + decimals)
   },
+  // This method take an array as arguments
+  // And make the average of this array
   average: function(array) {
   	var n = array.length;
   	var sum = 0;
@@ -343,27 +433,27 @@ var app = {
   	var result = sum / n;
   	return result;
   },
+  // This method convert the GPS data from DD to DMS
   convertDDToDMS: function(lat, lng) {
+    // We convert the latitude
     var convertLat = Math.abs(lat);
     var LatDeg = Math.floor(convertLat);
     var LatMin = (Math.floor((convertLat - LatDeg) * 60));
     var LatSec = Math.round((convertLat - LatDeg - LatMin / 60) * 3600 * 1000) / 1000;
     var LatCardinal = ((lat > 0) ? "N" : "S");
 
+    // We convert the longitude
     var convertLng = Math.abs(lng);
     var LngDeg = Math.floor(convertLng);
     var LngMin = (Math.floor((convertLng - LngDeg) * 60));
     var LngSec = Math.round((convertLng - LngDeg - LngMin / 60) * 3600 * 1000) / 1000;
     var LngCardinal = ((lng > 0) ? "E" : "W");
 
+    // We write the DMS coordinates
     var newLat = LatDeg + '° ' + LatMin + "' " + LatSec + '" ' + LatCardinal
     var newLng = LngDeg + '° ' + LngMin + "' " + LngSec + '" ' + LngCardinal
 
+    // We return the result
     return [newLat, newLng]
-    //return LatDeg + '° ' + LatMin + "' " + LatSec + '" ' + LatCardinal + "<br />" + LngDeg + '° ' + LngMin + "' " + LngSec + '" ' + LngCardinal;
-  },
-  debug: function() {
-    console.log("window.localStorage.getItem('langue') = " + window.localStorage.getItem('langue'));
-    console.log("Ressources = " + ressources);
   }
 };

@@ -2,14 +2,17 @@
 <html>
 
 <head>
+  <!-- Set caractère to UTF-8 ------------------------------------------------->
   <meta charset="utf-8">
+  <!-- Meta data -------------------------------------------------------------->
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
-  <!-- Chargement des fichiers CSS -->
+  <!-- Loading of CSS files --------------------------------------------------->
   <link rel="stylesheet" type="text/css" href="css/onsen-css-components.min.css" />
   <link rel="stylesheet" type="text/css" href="css/onsenui.min.css" />
   <link rel="stylesheet" type="text/css" href="css/index.css" />
 
+  <!-- Title ------------------------------------------------------------------>
   <title>112 Randonnées</title>
 </head>
 
@@ -39,14 +42,18 @@
         </ons-list>
       </ons-page>
     </ons-splitter-side>
+
+    <!-- Every page is made in a template ------------------------------------->
+    <!-- Those template will be loaded in this HTML tag for display ----------->
     <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
   </ons-splitter>
 
   <!--------------------------------------------------------------------------->
-  <!-- Page d'ACCUEIL --------------------------------------------------------->
+  <!-- HOME ------------------------------------------------------------------->
   <!--------------------------------------------------------------------------->
   <template id="home.html">
     <ons-page>
+      <!-- Menu of the home page ---------------------------------------------->
       <ons-toolbar>
         <div class="left">
           <ons-toolbar-button onclick="app.open()">
@@ -58,11 +65,16 @@
           <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
         </div>
       </ons-toolbar>
+      <!----------------------------------------------------------------------->
 
-      <ons-card>
+      <!-- Card to display the meteo with openweathermap ---------------------->
+      <ons-card modifier="material">
         <img src="img/meteo.jpg" alt="Météo" style="width: 100%">
         <div class="title">
-          <p class="text-center"><span class="translate" caption="home.meteo">Météo</span> <span id="cityname"></span></p>
+          <p class="text-center">
+            <span class="translate" caption="home.meteo">Météo</span>
+            <span id="cityname"></span>
+          </p>
         </div>
         <div class="content">
           <p>
@@ -71,22 +83,35 @@
           </p>
         </div>
       </ons-card>
+      <!----------------------------------------------------------------------->
 
+      <!-- In here we display for button to allow ----------------------------->
+      <!-- the user a navigation in the app ----------------------------------->
       <ons-button class="btn-large translate" modifier="large" onclick="app.load('path.html')" caption="home.btn.path">Démarrer un parcours</ons-button>
       <ons-button class="btn-large translate" modifier="large" onclick="app.load('stats.html')" caption="home.btn.stats">Voir les statistiques</ons-button>
       <ons-button class="btn-large translate" modifier="large" onclick="app.load('settings.html')" caption="home.btn.setting">Modifier les paramètres</ons-button>
       <ons-button class="btn-large translate" modifier="large" onclick="app.load('contact.html')" caption="home.btn.contact">Mettre à jour les contacts</ons-button>
 
+      <!-- We call the setLanguage methode ------------------------------------>
+      <!-- to update the language of this page -------------------------------->
       <script type="text/javascript">
         app.setLanguage();
       </script>
+
+      <!-- We include the meteo script ---------------------------------------->
       <script type="text/javascript" src="js/meteo.js"></script>
     </ons-page>
   </template>
+  <!--------------------------------------------------------------------------->
+  <!-- END HOME --------------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
 
+  <!--------------------------------------------------------------------------->
+  <!-- PATH ------------------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
   <template id="path.html">
     <ons-page>
-      <link rel="stylesheet" href="css/chrono.css" />
+      <!-- Menu of the home page ---------------------------------------------->
       <ons-toolbar>
         <div class="left">
           <ons-toolbar-button onclick="app.open()">
@@ -98,53 +123,96 @@
           <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
         </div>
       </ons-toolbar>
-      <div class="chrono">
-        <span id="h">00</span>:<span id="m">00</span>:<span id="s">00</span>
-      </div>
-      <ons-row>
-        <ons-col>
-          <ons-button id="start" class="btn-large" modifier="large">
-            <div class="translate" caption="path.start">Démarrer</div>
-          </ons-button>
-        </ons-col>
-        <ons-col>
-          <ons-button id="pause" class="btn-large" modifier="large">Pause</ons-button>
-        </ons-col>
-        <ons-col>
-          <ons-button id="reset" class="btn-large" modifier="large">Reset</ons-button>
-        </ons-col>
-      </ons-row>
-      <ons-row>
-        <ons-card modifier="material" style="width: 100%; text-align: center;">
-          <div class="content">
-            <div id="distance">
-              0 m
-            </div>
+      <!----------------------------------------------------------------------->
+
+      <!-- In this card we display the timer & the different button ---------->
+      <ons-card modifier="material">
+        <!-- Here we display the timer --------------------------------------->
+        <ons-row>
+          <div style="text-align: center; font-size: 32px; width: 100%; margin: 3% 0%;">
+            <span id="h">00</span>:<span id="m">00</span>:<span id="s">00</span>
           </div>
-          <div id="average_speed" class="content"></div>
-          <div id="max_speed" class="content"></div>
-        </ons-card>
-      </ons-row>
+        </ons-row>
+        <!--------------------------------------------------------------------->
+
+        <!-- Here we setup 3 buttons to start/resume, pause and stop the timer -->
+        <ons-row>
+          <ons-col>
+            <!-- The button to start/resume a path ---------------------------->
+            <img id="start" src="img/play.png" alt="Play" style="width: 50%; margin-left: 25%;">
+            <!-- <ons-button  class="btn-large" modifier="large">
+              <div class="translate" caption="path.start">Démarrer</div>
+            </ons-button> -->
+          </ons-col>
+          <ons-col>
+            <!-- The button to pause a path ----------------------------------->
+            <img id="pause" src="img/pause.png" alt="Pause" style="width: 50%; margin-left: 25%;">
+            <!-- <ons-button id="pause" class="btn-large" modifier="large">Pause</ons-button> -->
+          </ons-col>
+          <ons-col>
+            <!-- The button to stop a path ------------------------------------>
+            <img id="reset" src="img/stop.png" alt="Stop" style="width: 50%; margin-left: 25%;">
+            <!-- <ons-button id="reset" class="btn-large" modifier="large">Reset</ons-button> -->
+          </ons-col>
+        </ons-row>
+      </ons-card>
+
+      <!-- In this card the user wil be able to see --------------------------->
+      <!-- The distance he has made ------------------------------------------->
+      <ons-card modifier="material">
+        <ons-row>
+          <!-- Content div with the distance ---------------------------------->
+          <div class="content" style="text-align: center; font-size: 24px; width: 100%; margin: 3% 0%;">
+            <span class="translate" caption="path.distance">Distance : </span>
+            <span id="distance">0 m</div>
+          </div>
+        </ons-row>
+      </ons-card>
+      <!----------------------------------------------------------------------->
+
+      <!-- In this card the user wil be able to see --------------------------->
+      <!-- His average speed & his max speed ---------------------------------->
+      <ons-card modifier="material">
+        <ons-row>
+          <!-- Content div with the average speed ----------------------------->
+          <div class="content" style="text-align: center; width: 100%; margin: 3% 0%;">
+            <span class="translate" caption="path.average_speed">Vitesse moyenne : </span>
+            <span id="average_speed"></span>
+          </div>
+        </ons-row>
+        <ons-row>
+          <!-- Content div with the max speed --------------------------------->
+          <div class="content" style="text-align: center; width: 100%; margin: 3% 0%;">
+            <span class="translate" caption="path.max_speed">Vitesse max : </span>
+            <span id="max_speed"></span>
+          </div>
+        </ons-row>
+      </ons-card>
+      <!----------------------------------------------------------------------->
+
+      <!-- With this we will show the GPS coordinates ------------------------->
       <div id="showGPSData"></div>
-      <!-- <ons-row>
-    		<div id="map" style="height:250px!important;"></div>
-      </ons-row> -->
+
+      <!-- We call the setLanguage methode ------------------------------------>
+      <!-- to update the language of this page -------------------------------->
       <script type="text/javascript">
         app.setLanguage();
       </script>
+
+      <!-- We include the chrono script --------------------------------------->
       <script type="text/javascript" src="js/chrono.js"></script>
-      <!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
-      <!-- <script type="text/javascript" src="js/OpenLayers.js"></script>
-      <script type="text/javascript">
-        map = new OpenLayers.Map("map");
-        map.addLayer(new OpenLayers.Layer.OSM());
-        map.zoomToMaxExtent();
-  		</script> -->
     </ons-page>
   </template>
+  <!--------------------------------------------------------------------------->
+  <!-- END PATH --------------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
 
+  <!--------------------------------------------------------------------------->
+  <!-- STATISTIQUES ----------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
   <template id="stats.html">
     <ons-page>
+      <!-- Menu of the stats page --------------------------------------------->
       <ons-toolbar>
         <div class="left">
           <ons-toolbar-button onclick="app.open()">
@@ -156,30 +224,73 @@
           <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
         </div>
       </ons-toolbar>
+      <!----------------------------------------------------------------------->
 
+      <!-- Content of the stats page ------------------------------------------>
+      <!-- In this card we display four statistiques -------------------------->
       <ons-card modifier="material">
+        <!-- The total distance traveled by the user -------------------------->
         <div class="content">
-          Distance total parcourus : <span id="nb_km"></span> km
+          <span class="translate" caption="stats.total_distance">
+            Distance total parcourus
+          </span> : <span id="stats_nb_km"></span> km
         </div>
+        <!-- the total time of all the paths ---------------------------------->
         <div class="content">
-          Temps total (HH:mm:ss) : <span id="total_time"></span>
+          <span class="translate" caption="stats.total_time">
+            Temps total (HH:mm:ss)
+          </span> : <span id="stats_total_time"></span>
+        </div>
+        <!-- Overall average speed -------------------------------------------->
+        <div class="content">
+          <span class="translate" caption="stats.average_speed">
+            Vitesse moyenne globale
+          </span> : <span id="stats_average_speed"></span>
+        </div>
+        <!-- Overall max speed ------------------------------------------------>
+        <div class="content">
+          <span class="translate" caption="stats.max_speed">
+            Vitesse max globale
+          </span> : <span id="stats_max_speed"></span>
         </div>
       </ons-card>
+      <!----------------------------------------------------------------------->
 
+      <!-- This list will display paths --------------------------------------->
       <ons-list modifier="material">
-        <ons-list-header>Liste des <span id="nb_parcours"></span> Parcours</ons-list-header>
+        <ons-list-header>
+          <span class="translate" caption="stats.list_title_1">
+            Liste des
+          </span>
+          <span id="nb_parcours"></span>
+          <span class="translate" caption="stats.list_title_2">Parcours</span>
+        </ons-list-header>
         <div id="liste_data_parcours"></div>
       </ons-list>
+
+      <!-- In this HTML tag we will add a button to display more paths data --->
       <ons-row id="buttonMoreData"></ons-row>
+
+      <!-- We call the setLanguage methode ------------------------------------>
+      <!-- to update the language of this page -------------------------------->
       <script type="text/javascript">
-        app.setLanguage();
+      app.setLanguage();
       </script>
+
+      <!-- We include the stats script ---------------------------------------->
       <script type="text/javascript" src="js/stats.js"></script>
     </ons-page>
   </template>
+  <!--------------------------------------------------------------------------->
+  <!-- END STATISTIQUES ------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
 
+  <!--------------------------------------------------------------------------->
+  <!-- SETTINGS --------------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
   <template id="settings.html">
     <ons-page>
+      <!-- Menu of the setting page ------------------------------------------->
       <ons-toolbar>
         <div class="left">
           <ons-toolbar-button onclick="app.open()">
@@ -191,109 +302,155 @@
           <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
         </div>
       </ons-toolbar>
+      <!----------------------------------------------------------------------->
+
+      <!-- Language part : Title ---------------------------------------------->
       <ons-row>
         <h2 class="center_title translate" caption="setting.lang">Langage</h2>
       </ons-row>
+      <!----------------------------------------------------------------------->
+
+      <!-- Language part : Flag ----------------------------------------------->
       <ons-row>
+        <!-- Language part : Flag FR ------------------------------------------>
         <ons-col>
+          <!-- Picture with a french flag to setup the language in french ----->
           <img class="btn-large flag flag-fr-FR" onclick="app.updateLanguage('fr-FR')" src="img/france.png" alt="Français">
         </ons-col>
+        <!-- Language part : Flag EN ------------------------------------------>
         <ons-col>
+          <!-- Picture with a english flag to setup the language in english --->
           <img class="btn-large flag flag-en-EN" onclick="app.updateLanguage('en-EN')" src="img/united-kingdom.png" alt="English">
         </ons-col>
       </ons-row>
+      <!----------------------------------------------------------------------->
       <hr>
+      <!-- GPS part : Title --------------------------------------------------->
       <ons-row>
         <h2 class="center_title translate" caption="setting.gpsTitle">Type d'unité GPS envoyé avec le message d'alerte</h2>
       </ons-row>
+      <!-- GPS part : DD, DMS or Google Maps ---------------------------------->
       <ons-row>
+        <!-- GPS part : a button to setup the GPS unit to DD ------------------>
         <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DD')">Degrés décimal</ons-button>
       </ons-row>
       <ons-row>
+        <!-- GPS part : a button to setup the GPS unit to DMS ----------------->
         <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DMS')">Degrés minutes secondes</ons-button>
       </ons-row>
       <ons-row>
+        <!-- GPS part : a button to setup the GPS unit to Google Maps --------->
         <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('GM')">Google Maps</ons-button>
       </ons-row>
+      <!----------------------------------------------------------------------->
       <hr>
+      <!-- Notification part : Title ------------------------------------------>
       <ons-row>
         <h2 class="center_title translate" caption="setting.notif">Notification <span id="notifStatus"></span></h2>
       </ons-row>
+      <!-- Notification part : On, Off ---------------------------------------->
       <ons-row>
         <ons-col>
+          <!-- Notification part : a button to activate the notification ------>
           <ons-button id="buttonOnNotif" modifier="large material" class="btn-large" onclick="onOffNotif('on')" style="background: #00701a;">Activer</ons-button>
         </ons-col>
         <ons-col>
+          <!-- Notification part : a button to cancel the notification -------->
           <ons-button id="buttonOffNotif" modifier="large material" class="btn-large" onclick="onOffNotif('off')" style="background: #b71c1c;">Désactiver</ons-button>
         </ons-col>
-        <!-- <ons-list style="width: 100%; margin: 2%; font: inherit; border-radius: 3px;">
-          <ons-list-item tappable>
-            <label class="left">
-              <ons-radio id="notifOn" name="notif" input-id="radio-1" data="on" onclick="onOffNotif('on')"></ons-radio>
-            </label>
-            <label for="radio-1" class="center">
-              Activé
-            </label>
-          </ons-list-item>
-          <ons-list-item tappable>
-            <label class="left">
-              <ons-radio id="notifOff" name="notif" input-id="radio-2" data="off" onclick="onOffNotif('off')"></ons-radio>
-            </label>
-            <label for="radio-2" class="center">
-              Désactivé
-            </label>
-          </ons-list-item>
-        </ons-list> -->
       </ons-row>
+      <!----------------------------------------------------------------------->
       <hr>
+      <!-- Temperature unit part : Title -------------------------------------->
       <ons-row>
         <h2 class="center_title translate" caption="setting.temp">Unité de température</h2>
       </ons-row>
+      <!-- Temperature unit part : Kelvin, Celcius or Fahrenheit -------------->
       <ons-row>
         <ons-col>
+          <!-- Temp unit part : a button to setup the temp unit in Kelvin ----->
           <ons-button modifier="large material" class="btn-large" onclick="updateUnitTemp('Kelvin')">°K</ons-button>
         </ons-col>
         <ons-col>
+          <!-- Temp unit part : a button to setup the temp unit in Celcius ---->
           <ons-button modifier="large material" class="btn-large" onclick="updateUnitTemp('Celcius')">°C</ons-button>
         </ons-col>
         <ons-col>
+          <!-- Temp unit part : a button to setup the temp unit in Fahrenheit -->
           <ons-button modifier="large material" class="btn-large" onclick="updateUnitTemp('Fahrenheit')">°F</ons-button>
         </ons-col>
       </ons-row>
+      <!----------------------------------------------------------------------->
       <hr>
+      <!-- Delete part : a button to delete every data ------------------------>
       <ons-row>
         <ons-button onclick="alertDialogReset()" modifier="large material" class="btn-large translate" style="background: #b71c1c;" caption="setting.reset">Supprimer toutes les données !</ons-button>
       </ons-row>
+      <!----------------------------------------------------------------------->
+
+      <!-- A toast is a message that appears at the --------------------------->
+      <!-- bottom of the screen to warn the user ------------------------------>
+      <!-- The toast below will tell the user --------------------------------->
+      <!-- that every data has been deleted ----------------------------------->
       <ons-toast id="alertDialogResetToast" animation="ascend">
         <span class="translate" caption="alert_dialog_reset.toast">Données supprimées !</span>
         <button onclick="alertDialogResetToast.hide()">OK</button>
       </ons-toast>
+
+      <!-- The toast below will tell the user --------------------------------->
+      <!-- that the temperature or GPS unit has been change ------------------->
       <ons-toast id="unitToast" animation="ascend">
         <span class="translate" caption="setting.toast_unit">Changement enregistré !</span>
         <button onclick="unitToast.hide()">OK</button>
       </ons-toast>
+
+      <!-- We call the setLanguage methode ------------------------------------>
+      <!-- to update the language of this page -------------------------------->
       <script type="text/javascript">
         app.setLanguage();
       </script>
+
+      <!-- We include the setting script -------------------------------------->
       <script type="text/javascript" src="js/setting.js"></script>
     </ons-page>
   </template>
+  <!--------------------------------------------------------------------------->
+  <!-- END SETTINGS ----------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
 
+  <!--------------------------------------------------------------------------->
+  <!-- ALERT POPUP DIALOG ----------------------------------------------------->
+  <!--------------------------------------------------------------------------->
+
+  <!-- This popup will appear when the user will want to erase all data ------->
   <template id="alert_dialog_reset.html">
     <ons-alert-dialog id="alert_dialog_reset" modifier="rowfooter">
+      <!-- Alert popup title -------------------------------------------------->
       <div class="alert-dialog-title translate" caption="alert_dialog_reset.title">Attention</div>
+      <!-- Alert popup description -------------------------------------------->
       <div class="alert-dialog-content translate" caption="alert_dialog_reset.text">
         Êtes-vous sûr de supprimer les données de l'application ?
       </div>
+      <!-- Alert popup action ------------------------------------------------->
       <div class="alert-dialog-footer">
+        <!-- Alert popup action cancel ---------------------------------------->
         <ons-alert-dialog-button onclick="hideAlertDialog()" class="translate" caption="alert_dialog_reset.cancel">Annuler</ons-alert-dialog-button>
+        <!-- Alert popup action OK -------------------------------------------->
         <ons-alert-dialog-button onclick="resetData()" class="translate" caption="alert_dialog_reset.confirm">OK</ons-alert-dialog-button>
       </div>
+      <!----------------------------------------------------------------------->
     </ons-alert-dialog>
   </template>
+  <!--------------------------------------------------------------------------->
+  <!-- END ALERT POPUP DIALOG ------------------------------------------------->
+  <!--------------------------------------------------------------------------->
 
+  <!--------------------------------------------------------------------------->
+  <!-- CONTACT ---------------------------------------------------------------->
+  <!--------------------------------------------------------------------------->
   <template id="contact.html">
     <ons-page>
+      <!-- Menu of the contact page ------------------------------------------->
       <ons-toolbar>
         <div class="left">
           <ons-toolbar-button onclick="app.open()">
@@ -305,70 +462,107 @@
           <ons-button onclick='app.sendSms()' class="sos-btn">SOS</ons-button>
         </div>
       </ons-toolbar>
+      <!----------------------------------------------------------------------->
+
+      <!-- Content of the contact page ---------------------------------------->
       <ons-card modifier="material">
+        <!-- Usage indication ------------------------------------------------->
         <div class="content">
           <ul>
-            <li>Le numéro renseigné ci-dessous recevra un SMS d'alerte quand vous appuierez sur le bouton SOS</li>
+            <li class="translate" caption="contact.info">
+              Le numéro renseigné ci-dessous recevra un SMS d'alerte quand vous appuierez sur le bouton SOS
+            </li>
           </ul>
         </div>
-
+        <!--------------------------------------------------------------------->
         <hr>
-
+        <!-- Contact input : require a phone number --------------------------->
         <div class="content" style="margin: 20px;">
           <label for="contact">Contact</label>
-          <ons-input id="contact" input-id="contact" placeholder=" 01 23 45 67 89"></ons-input>
+          <ons-input id="contact" input-id="contact" placeholder="01 23 45 67 89"></ons-input>
         </div>
+        <!--------------------------------------------------------------------->
 
+        <!-- Button to show a popover with the user contacts ------------------>
         <div class="content" style="margin: 20px;">
-          <ons-button modifier="large material" onclick="showPopover(this)"><span class="translate" caption="contact.showContactButton"></span></ons-button>
+          <ons-button modifier="large material" onclick="showContactListPopover(this)">
+            <span class="translate" caption="contact.showContactButton"></span>
+          </ons-button>
         </div>
+        <!--------------------------------------------------------------------->
 
+        <!-- Button to save changes in the contact input ---------------------->
         <div class="content" style="margin: 20px;">
-          <ons-button modifier="large material" onclick="saveContacts()"><span class="translate" caption="contact.saveButton"></span></ons-button>
+          <ons-button modifier="large material" onclick="saveContacts()">
+            <span class="translate" caption="contact.saveButton"></span>
+          </ons-button>
         </div>
-
+        <!--------------------------------------------------------------------->
         <hr>
-
+        <!-- Message input : require a text ----------------------------------->
         <div class="content" style="margin: 20px;">
           <label for="message">Message</label>
           <ons-input id="message" input-id="message" modifier="underbar" float></ons-input>
         </div>
+        <!--------------------------------------------------------------------->
 
+        <!-- Button to save changes in the message input ---------------------->
         <div class="content" style="margin: 20px;">
-          <ons-button modifier="large material" onclick="saveMessage()"><span class="translate" caption="contact.saveButton"></span></ons-button>
+          <ons-button modifier="large material" onclick="saveMessage()">
+            <span class="translate" caption="contact.saveButton"></span>
+          </ons-button>
         </div>
       </ons-card>
 
+      <!-- A toast is a message that appears at the --------------------------->
+      <!-- bottom of the screen to warn the user ------------------------------>
+      <!-- The toast below will tell the user --------------------------------->
+      <!-- that the CONTACT has been saved ------------------------------------>
       <ons-toast id="contactToast" animation="ascend">
         <span class="translate" caption="contact.toast_contact">Contact Enregistrer !</span>
         <button onclick="contactToast.hide()">OK</button>
       </ons-toast>
+      <!----------------------------------------------------------------------->
+
+      <!-- The toast below will tell the user --------------------------------->
+      <!-- that the MESSAGE has been saved ------------------------------------>
       <ons-toast id="messageToast" animation="ascend">
         <span class="translate" caption="contact.toast_message">Message Enregistrer !</span>
         <button onclick="messageToast.hide()">OK</button>
       </ons-toast>
 
+      <!-- We call the setLanguage methode ------------------------------------>
+      <!-- to update the language of this page -------------------------------->
       <script type="text/javascript">
         app.setLanguage();
       </script>
+
+      <!-- We include the contact script -------------------------------------->
       <script type="text/javascript" src="js/contacts.js"></script>
     </ons-page>
-
   </template>
 
-  <ons-popover id="popover" direction="down">
+  <!-- The html part of the contact list popover ------------------------------>
+  <ons-popover id="contact_list_popover" direction="down">
       <ons-list id="list_contact" style="max-height: 50vh; overflow: scroll;">
         <ons-list-header class="translate" caption="contact.titlePopover">Liste de contacts</ons-list-header>
       </ons-list>
       <p style="text-align: center">
-        <ons-button onclick="hidePopover()"><span class="translate" caption="contact.closePopover">Fermer</span></ons-button>
+        <ons-button onclick="hideContactListPopover()"><span class="translate" caption="contact.closePopover">Fermer</span></ons-button>
       </p>
   </ons-popover>
+  <!--------------------------------------------------------------------------->
+  <!-- END CONTACT ------------------------------------------------------------>
+  <!--------------------------------------------------------------------------->
 
+  <!-- Every javascript file needed ------------------------------------------->
   <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/onsenui.min.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
+  <!--------------------------------------------------------------------------->
+
+  <!-- We call the initialize methode to start the app ------------------------>
   <script type="text/javascript">
     app.initialize();
   </script>

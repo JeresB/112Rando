@@ -1,15 +1,111 @@
+// In the stats page we display every path made by the user
+// But we only want to display those path ten by ten
+// So we use two variables limit and offset to control
+// the database request better
 var limit = 10
 var offset = 0
 
 // When the page has loaded
 // We open a link to the database
-// Then we request a list of every paths
+// Then we request a list of ten paths
+// We also gather every path to make some data
 $( document ).ready(function() {
-  loadData()
+  loadStatsData()
+  loadPathsData()
 });
 
-function loadData() {
-  console.log("Starting loadData");
+// This function will recover every paths and make some data with them
+function loadStatsData() {
+  // We open a link to the database
+  var randoBDD = window.sqlitePlugin.openDatabase({name: "randoBDD.db", location: 'default'});
+
+  // With this transaction we request every paths in the database
+  randoBDD.transaction(function(transaction) {
+    transaction.executeSql('SELECT * FROM parcours', [], function (tx, results) {
+      // We gather the length of the data we collected
+      var len = results.rows.length, i;
+
+      // We create variables for the data we want to display
+      var nb_km = 0
+      var total_time = 0
+      var average_speed = []
+      var max_speed = 0
+
+      // We display the number of paths to the user
+      $("#nb_parcours").html(len);
+
+      // For every paths
+      for (i = 0; i < len; i++) {
+        // We increase the distance
+        nb_km += results.rows.item(i).distance
+        // We increase the total time
+        total_time = addTimes(total_time, results.rows.item(i).temps)
+
+        // We add every average speed in an array
+        average_speed.push(results.rows.item(i).vitesse_moyen)
+
+        // We calcul the max speed
+        if (results.rows.item(i).vitesse_max > max_speed) {
+          max_speed = results.rows.item(i).vitesse_max
+        }
+      }
+
+      // We display in the HTML
+        // The total distance
+      $("#stats_nb_km").html(nb_km)
+        // The total time
+      $("#stats_total_time").html(total_time)
+        // The max speed
+      $("#stats_max_speed").html(max_speed)
+        // The overall average speed
+      $("#stats_average_speed").html(app.average(average_speed))
+    }, null);
+  });
+}
+
+// This function will check if we have more paths data to display for the user
+// If we do then we will add a button so the user can see more paths data
+function showButtonMoreData() {
+  // We open a link to the database
+  var randoBDD = window.sqlitePlugin.openDatabase({name: "randoBDD.db", location: 'default'});
+
+  // With this transaction we request every paths in the database
+  randoBDD.transaction(function(transaction) {
+    transaction.executeSql('SELECT * FROM parcours', [], function (tx, results) {
+      // We gather the length of the data we collected
+      var len = results.rows.length, i;
+
+      // With the langht, the limit and the offset we calcul the remaining path
+      var remaining_path = (len - limit - offset);
+
+      // To update the language of the button
+      // We add to do this because this button is made after the DOM is ready
+      var lang = window.localStorage.getItem('langue')
+      var more_data = ressources[lang]['stats.more_data'];
+
+      // If we have more paths to display we add a button
+      // This button will allow the user to display more paths data
+      if (remaining_path > 0) {
+        $("#buttonMoreData").html(`
+          <ons-button
+            id="loadMoreData"
+            modifier="large material"
+            class="btn-large"
+            onclick="loadPathsData()">
+            ${more_data}
+          </ons-button>`)
+        // We increase the offset
+        offset += 10
+      } else {
+        // If the user can already see every paths then we remove the button
+        $("#buttonMoreData").html('')
+      }
+
+    }, null);
+  });
+}
+
+function loadPathsData() {
   // We open a link to the database
   var randoBDD = window.sqlitePlugin.openDatabase({name: "randoBDD.db", location: 'default'});
 
@@ -19,66 +115,20 @@ function loadData() {
       // We gather the length of the data we collected
       var len = results.rows.length, i;
 
-      console.log(results.rows);
-
       // Finaly for every paths we add one item list to display the data of the path
       for (i = 0; i < len; i++) {
-        $("#liste_data_parcours").append("<ons-list-item>N° " + results.rows.item(i).id + " / " + round(results.rows.item(i).distance, 3) + " km / " + results.rows.item(i).temps + "</ons-list-item>");
+        $("#liste_data_parcours").append("<ons-list-item>N° " + results.rows.item(i).id + " / " + app.round(results.rows.item(i).distance, 3) + " km / " + results.rows.item(i).temps + "</ons-list-item>");
       }
     }, null);
   });
 
-  randoBDD.transaction(function(transaction) {
-    transaction.executeSql('SELECT * FROM parcours', [], function (tx, results) {
-      // We gather the length of the data we collected
-      var len = results.rows.length, i;
-
-      var nb_km = 0
-      var total_time = 0
-      var average_speed = []
-      var max_speed = 0
-
-      // Then we display this number for the user
-      $("#nb_parcours").html(len);
-
-      var nb_restant = (len - limit - offset);
-
-      console.log("NB RESTANT" + nb_restant);
-
-      for (i = 0; i < len; i++) {
-        nb_km += results.rows.item(i).distance
-        total_time = addTimes(total_time, results.rows.item(i).temps)
-
-        average_speed.push(results.rows.item(i).vitesse_max)
-
-        if (results.rows.item(i).vitesse_max > max_speed) {
-          max_speed = results.rows.item(i).vitesse_max
-        }
-      }
-
-      $("#stats_nb_km").html(nb_km)
-      $("#stats_total_time").html(total_time)
-      $("#stats_max_speed").html(max_speed)
-      $("#stats_average_speed").html(app.average(average_speed))
-
-      if (nb_restant > 0) {
-        $("#buttonMoreData").html('<ons-button id="loadMoreData" modifier="large material" class="btn-large" onclick="loadData()">More Data</ons-button>')
-        offset += 10
-      } else {
-        $("#buttonMoreData").html('')
-      }
-
-    }, null);
-  });
-}
-
-// This function allows to choose the number of decimals after the comma
-function round(value, decimals) {
-  return Number(Math.round( value + 'e' + decimals ) + 'e-' + decimals)
+  // We call the function to add the button showMoreData if we have more data
+  showButtonMoreData()
 }
 
 /**
  * Add two string time values (HH:mm:ss) with javascript
+ * Find on internet : https://gist.github.com/joseluisq/dc205abcc9733630639eaf43e267d63f
  *
  * Usage:
  *  > addTimes('04:20:10', '21:15:10');
