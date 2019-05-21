@@ -29,6 +29,12 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return d
 }
 
+// To add effect when click on action button
+$('.action_path').click(function() {
+  $('.action_path').removeClass('grayscale-75')
+  $(this).addClass('grayscale-75')
+})
+
 // -----------------------------------------------------------------------------
 // ----- When the document is ready we start the code execution ----------------
 // -----------------------------------------------------------------------------
@@ -39,6 +45,9 @@ $( document ).ready(function() {
   var h = 0 // Hour
   var m = 0 // Minute
   var s = 0 // Second
+
+  var timer = 0
+  var old_timer = 0
 
   var time // Will contain the execution of the chrono
   var inactive = true // Will control the chrono execution
@@ -87,12 +96,6 @@ $( document ).ready(function() {
       window.localStorage.setItem('watchID',
         navigator.geolocation.watchPosition(function(position) {
 
-          // If the speed isn't null, we push it to an array and store this array
-          if (position.coords.speed != null && position.coords.speed > 0) {
-            speeds.push(position.coords.speed)
-            window.localStorage.setItem('speeds', speeds)
-          }
-
           // If the user has chosen DD or Google maps has GPS unit
           if (window.localStorage.getItem('GPS_unit') != 'DMS') {
             // We will display the GPS coordinates in DD
@@ -138,14 +141,16 @@ $( document ).ready(function() {
           }
 
           // We calcul the distance between the starting position and the new position of the user
-          distance += calculateDistance(
+          new_distance = calculateDistance(
             startPos.coords.latitude, startPos.coords.longitude,
             position.coords.latitude, position.coords.longitude
           )
 
-          console.log("DISTANCE = " + distance);
-          console.log(startPos);
-          console.log(position);
+          // We calcul the meter that the user has just done
+          var meter = app.round(new_distance, 3) * 1000
+
+          // We add the new distance to the old one
+          distance += new_distance
 
           // If the distance hasn't reach 1 km will display the distance in meters
           if (distance > 1) {
@@ -159,16 +164,49 @@ $( document ).ready(function() {
           // We save the distance data in storage
           window.localStorage.setItem('distance', app.round(distance, 3))
 
-          // We calcul the average and max speed
-          var vitesse_moyen = app.average(window.localStorage.getItem('speeds'))
-          var vitesse_max = Math.max(window.localStorage.getItem('speeds'))
+          // We calcul the new time and save the old one
+          timer = 0
+          if (h > 0) {
+            timer += h * 3600
+          }
 
-          console.log("Vitesse moyenne : " + vitesse_moyen + " & vitesse max : " + vitesse_max);
+          if (m > 0) {
+            timer += m * 60
+          }
+
+          if (s > 0) {
+            timer += s
+          }
+          console.log("HEURE = " + h + " & MINUTES = " + m + " & SECONDES = " + s);
+          console.log("TIMER = " + timer + " & old_timer = " + old_timer);
+          var save_time = timer
+          timer -= old_timer
+          old_timer = save_time
+
+          console.log("Apres calcul => TIMER = " + timer + " & old_timer = " + old_timer);
+
+          // We calcul the speed in km/h
+          var speed = (meter/timer) * 3.6
+
+          console.log("METER = " + meter + " & TIMER = " + timer + " & SPEED = " + speed);
+
+          // If the speed isn't null we save it
+          if (speed > 0) {
+            speeds.push(speed)
+          }
+
+          console.log("SPEEDS = " + speeds);
+          console.log("AVERAGE = " + app.average(speeds));
+          console.log("MAX = " + Math.max(...speeds));
+
+          // We calcul the average and max speed
+          var vitesse_moyen = app.average(speeds)
+          var vitesse_max = Math.max(...speeds)
 
           // We display the data
           $('#distance').html(d + unit)
-          $('#average_speed').html(vitesse_moyen)
-          $('#max_speed').html(vitesse_max)
+          $('#average_speed').html(app.round(vitesse_moyen, 3) + " km/h")
+          $('#max_speed').html(app.round(vitesse_max, 3) + " km/h")
 
           // The starting position is now the new position
           startPos = position
@@ -199,14 +237,17 @@ $( document ).ready(function() {
     var save_time = dchiffre(h) + ':' + dchiffre(m) + ':' + dchiffre(s)
 
     // We calcul the average and max speed
-    var vitesse_moyen = app.average(window.localStorage.getItem('speeds'))
-    var vitesse_max = Math.max(window.localStorage.getItem('speeds'))
+    var vitesse_moyen = app.average(speeds)
+    var vitesse_max = Math.max(...speeds)
+
+    // We recover the distance
+    var save_distance = window.localStorage.getItem('distance')
 
     // We save all the path data into the database
     randoBDD.transaction(function(transaction) {
       var executeQuery = "INSERT INTO parcours (distance, temps, vitesse_moyen, vitesse_max) VALUES (?,?,?,?)";
       transaction.executeSql(executeQuery, [
-          window.localStorage.getItem('distance'),
+          save_distance,
           save_time,
           vitesse_moyen,
           vitesse_max
@@ -232,8 +273,8 @@ $( document ).ready(function() {
 
     // We reset the data display
     $('#distance').html('0 m')
-    $('#average_speed').html('0')
-    $('#max_speed').html('0')
+    $('#average_speed').html('0 km/h')
+    $('#max_speed').html('0 km/h')
 
     // We clear the interval timer
     if (inactive == false) {

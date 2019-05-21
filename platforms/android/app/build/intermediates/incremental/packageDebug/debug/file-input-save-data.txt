@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Mon May 20 14:21:01 CEST 2019
+#Mon May 20 16:14:01 CEST 2019
 60.set=ASSET
 52.set=ASSET
 53.base=D\:\\M1\\Projet M1 112\\112Rando\\platforms\\android\\app\\build\\intermediates\\assets\\debug

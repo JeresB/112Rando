@@ -214,6 +214,12 @@ var app = {
     fr['setting.temp'] = "Unité de température";
     fr['setting.reset'] = "Supprimer toutes les données !";
     fr['setting.toast_unit'] = "Changement enregistré !";
+    fr['setting.gpsTitle'] = "Type d'unité GPS envoyé avec le message d'alerte";
+    fr['setting.DD'] = "Degrés décimaux";
+    fr['setting.DMS'] = "Degrés minutes secondes";
+    fr['setting.GM'] = "Google Maps";
+    fr['setting.notif_on'] = "Activer";
+    fr['setting.notif_off'] = "Désactiver";
 
     fr['alert_dialog_reset.title'] = "Attention";
     fr['alert_dialog_reset.text'] = "Êtes-vous sûr de supprimer les données de l'application ?";
@@ -265,6 +271,12 @@ var app = {
     en['setting.temp'] = "Temperature unit";
     en['setting.reset'] = "Reset all data !";
     en['setting.toast_unit'] = "Data updated !";
+    en['setting.gpsTitle'] = "Type of GPS unit sent with the alert message";
+    en['setting.DD'] = "Decimal degrees";
+    en['setting.DMS'] = "Degrees minutes seconds";
+    en['setting.GM'] = "Google Maps";
+    en['setting.notif_on'] = "Activate";
+    en['setting.notif_off'] = "Deactivate";
 
     en['alert_dialog_reset.title'] = "Warning";
     en['alert_dialog_reset.text'] = "Are you sure you want to delete the data from the app ?";

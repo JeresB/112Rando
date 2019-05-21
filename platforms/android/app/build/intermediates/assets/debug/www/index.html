@@ -139,19 +139,19 @@
         <ons-row>
           <ons-col>
             <!-- The button to start/resume a path ---------------------------->
-            <img id="start" src="img/play.png" alt="Play" style="width: 50%; margin-left: 25%;">
+            <img id="start" class="action_path" src="img/play.png" alt="Play" style="width: 50%; margin-left: 25%;">
             <!-- <ons-button  class="btn-large" modifier="large">
               <div class="translate" caption="path.start">Démarrer</div>
             </ons-button> -->
           </ons-col>
           <ons-col>
             <!-- The button to pause a path ----------------------------------->
-            <img id="pause" src="img/pause.png" alt="Pause" style="width: 50%; margin-left: 25%;">
+            <img id="pause" class="action_path" src="img/pause.png" alt="Pause" style="width: 50%; margin-left: 25%;">
             <!-- <ons-button id="pause" class="btn-large" modifier="large">Pause</ons-button> -->
           </ons-col>
           <ons-col>
             <!-- The button to stop a path ------------------------------------>
-            <img id="reset" src="img/stop.png" alt="Stop" style="width: 50%; margin-left: 25%;">
+            <img id="reset" class="action_path" src="img/stop.png" alt="Stop" style="width: 50%; margin-left: 25%;">
             <!-- <ons-button id="reset" class="btn-large" modifier="large">Reset</ons-button> -->
           </ons-col>
         </ons-row>
@@ -332,15 +332,21 @@
       <!-- GPS part : DD, DMS or Google Maps ---------------------------------->
       <ons-row>
         <!-- GPS part : a button to setup the GPS unit to DD ------------------>
-        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DD')">Degrés décimal</ons-button>
+        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DD')">
+          <span class="translate" caption="setting.DD">Degrés décimaux</span>
+        </ons-button>
       </ons-row>
       <ons-row>
         <!-- GPS part : a button to setup the GPS unit to DMS ----------------->
-        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DMS')">Degrés minutes secondes</ons-button>
+        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('DMS')">
+          <span class="translate" caption="setting.DMS">Degrés minutes secondes</span>
+        </ons-button>
       </ons-row>
       <ons-row>
         <!-- GPS part : a button to setup the GPS unit to Google Maps --------->
-        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('GM')">Google Maps</ons-button>
+        <ons-button modifier="large material" class="btn-large" onclick="updateGPSUnit('GM')">
+          <span class="translate" caption="setting.GM">Google Maps</span>
+        </ons-button>
       </ons-row>
       <!----------------------------------------------------------------------->
       <hr>
@@ -352,11 +358,15 @@
       <ons-row>
         <ons-col>
           <!-- Notification part : a button to activate the notification ------>
-          <ons-button id="buttonOnNotif" modifier="large material" class="btn-large" onclick="onOffNotif('on')" style="background: #00701a;">Activer</ons-button>
+          <ons-button id="buttonOnNotif" modifier="large material" class="btn-large" onclick="onOffNotif('on')" style="background: #00701a;">
+            <span class="translate" caption="setting.notif_on">Activer</span>
+          </ons-button>
         </ons-col>
         <ons-col>
           <!-- Notification part : a button to cancel the notification -------->
-          <ons-button id="buttonOffNotif" modifier="large material" class="btn-large" onclick="onOffNotif('off')" style="background: #b71c1c;">Désactiver</ons-button>
+          <ons-button id="buttonOffNotif" modifier="large material" class="btn-large" onclick="onOffNotif('off')" style="background: #b71c1c;">
+            <span class="translate" caption="setting.notif_off">Désactiver</span>
+          </ons-button>
         </ons-col>
       </ons-row>
       <!----------------------------------------------------------------------->

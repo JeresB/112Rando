@@ -58,7 +58,7 @@ function loadStatsData() {
         // The max speed
       $("#stats_max_speed").html(max_speed)
         // The overall average speed
-      $("#stats_average_speed").html(app.average(average_speed))
+      $("#stats_average_speed").html(app.round(app.average(average_speed), 3) + ' km/h')
     }, null);
   });
 }

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\0.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="9a89d8984d104516fb45a31f7d647ce381625033">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\11.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="92d788b658c80b21f1c838b1003e0af6bd70a1c1">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\11.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\2.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="c917c6bfc2cfc8fa7f31484e82282c6addd072e7">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\6.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="646a3ccb19c4c4a65234e723024eb156d8c95cc3">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\8.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="cd1ac7bb8c5b8308671b34328fe141e7b3973d8d">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\5.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="e70bb91d0f2a6a210603265f464de009433b2818">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\4.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="80cbcf22da8e35f2aab41fdddb49ba90f5209d7d">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\12.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="2cce1edf674299569566f6961bca5352bd512ea7">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\7.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="f1eb52ab39a98c946ac6939b258f07962a4ce1b3">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\14.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="aad1abcaf53411a19b3c538656771ab3797106a1">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\14.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\9.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="8894eaf3ad90c58cc8a1b32f447656194d559453">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\13.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="445108ef35183b37885d5ca832eaff840c95d757">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\13.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\desugar\release\10.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="28.0.3"
+        sha1="581f740328e8f80438d9af31a2abee6e64437508">
+        <dex dex="D:\M1\Projet M1 112\112Rando\platforms\android\app\build\intermediates\transforms\preDex\release\10.jar" />
+    </item>
+
+</items>
